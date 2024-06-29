@@ -1,6 +1,6 @@
 import {Form} from "./common/Form";
 import {IOrder} from "../types";
-import {IEvents} from "./base/Events";
+import {IEvents} from "./base/EventEmitter";
 
 export class Contacts extends Form<IOrder> {
     protected _inputPhone: HTMLInputElement;

@@ -1,5 +1,6 @@
 import {Events, FormErrors, IStorData, IOrder, IProduct} from "../types";
 import {IEvents} from "./base/EventEmitter";
+import {Model} from "./base/Model";
 
 export type ProductsChangeEvent = {
     products: IProduct[]
@@ -20,7 +21,7 @@ export class StorData extends Model<IStorData> {
 
     setProducts(products: IProduct[]) {
         this.products = products;
-        this.emitChanges(Events.PRODUCTS_CHANGED, { products: this.products });
+        this.emitChanges(Events.CATALOG_CHANGE, { products: this.products });
     }
 
     getProducts() {
@@ -95,7 +96,7 @@ export class StorData extends Model<IStorData> {
 
     clearBasket() {
         this.basket = [];
-        this.emitChanges(Events.PRODUCTS_CHANGED, { products: this.products });
+        this.emitChanges(Events.CATALOG_CHANGE, { products: this.products });
     }
 
     clearOrder() {

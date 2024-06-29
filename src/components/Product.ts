@@ -52,7 +52,23 @@ export class ProductView extends Component<IProductView> {
 
     set category(value: string) {
         this.setText(this._category, value);
-        this._category.classList.add(this.categoryClasses[value]);
+        switch (value) {
+            case 'софт-скил':
+                this.toggleClass(this._category, `card__category_soft`);
+                break;
+            case 'другое':
+                this.toggleClass(this._category, `card__category_other`);
+                break;
+            case 'кнопка':
+                this.toggleClass(this._category, `card__category_button`);
+                break;
+            case 'дополнительное':
+                this.toggleClass(this._category, `card__category_additional`);
+                break;
+            case 'хард-скил':
+                this.toggleClass(this._category, `card__category_hard`);
+                break;
+          }
     }
 
     set price(value: string) {

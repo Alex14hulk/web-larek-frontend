@@ -1,17 +1,17 @@
 import './scss/styles.scss';
-import {EventEmitter} from "./components/base/Events";
+import {EventEmitter} from "./components/base/EventEmitter";
 import {API_URL, CDN_URL} from "./utils/constants";
 import {WLarekApi} from './components/WLarekApi';
 import {cloneTemplate, createElement, ensureElement} from "./utils/utils";
 import {StorData, ProductsChangeEvent} from "./components/StorData";
-import {Page} from "./components/Page";
+import {PageView} from "./components/Page";
 import {ProductInBasketView, ProductView, ProductViewModal} from "./components/Product";
 import {Events, IOrder, IProduct} from "./types";
 import {Modal} from "./components/common/Modal";
-import {Basket} from "./components/Basket";
-import {Order} from "./components/Order";
-import {OrderFormView} from "./components/OrderFormView";
-import {Contacts} from "";
+import {BasketView} from "./components/Basket";
+import {OrderForm} from "./components/Order";
+import {OrderSuccessView} from "./components/OrderFormView";
+import {Contacts} from "./components/Contacts";
 
 const events = new EventEmitter();
 const api = new WLarekApi(CDN_URL, API_URL);
@@ -37,11 +37,11 @@ const storData = new StorData({}, events, [], [], {
 });
 
 // Контейнеры
-const page = new Page(document.body, events);
-const basket = new Basket(cloneTemplate(basketTemplate), events);
-const orderForm = new Order(cloneTemplate(orderTemplate), events);
+const page = new PageView(document.body, events);
+const basket = new BasketView(cloneTemplate(basketTemplate), events);
+const orderForm = new OrderForm(cloneTemplate(orderTemplate), events);
 const contactsForm = new Contacts(cloneTemplate(contactsTemplate), events);
-const orderFormView = new OrderFormView(cloneTemplate(successTemplate), {
+const orderFormView = new OrderSuccessView(cloneTemplate(successTemplate), {
     onClick: () => {
         modal.close();
         events.emit(Events.ORDER_CLEAR);
@@ -52,7 +52,7 @@ const orderFormView = new OrderFormView(cloneTemplate(successTemplate), {
 // Поймали событие, сделали что нужно
 
 //Изменения продуктов на главной странице
-events.on<ProductsChangeEvent>(Events.PRODUCTS_CHANGED, () => {
+events.on<ProductsChangeEvent>(Events.CATALOG_CHANGE, () => {
     page.counter = storData.getBasket().length;
     page.catalog = storData.getProducts().map(item => {
         const product = new ProductView(cloneTemplate(productCatalogTemplate), {
@@ -193,9 +193,10 @@ events.on(/(^order|^contacts):submit/, () => {
         return events.emit(Events.ORDER_START);
     }
 
-    const products = appData.getBasket();
+    const products = storData.getBasket();
 
-    api.createOrder({
+    api
+        .createOrder({
             ...storData.getOrder(),
             items: products.map(product => product.id),
             total: storData.getTotalPrice(),

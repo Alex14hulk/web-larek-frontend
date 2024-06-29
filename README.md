@@ -73,6 +73,9 @@ yarn build
 - setImage(element: HTMLImageElement, src: string, alt?: string) - устанавливает элементу изображение. 
 - render(data?: Partial): HTMLElement - возвращает корневой DOM-элемент.
 
+Класс Model
+Класс модели данных, работает с дженериками.
+
 ## Данные
 
 Класс CardData

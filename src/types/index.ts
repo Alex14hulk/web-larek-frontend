@@ -8,22 +8,19 @@ export interface IProduct {
 }
 
 export interface IBasket {
-    count: number;
     total: number;
-    items: string[];
+    products: HTMLElement[];
 }
 
 export type TBasketProduct = Pick<IProduct, "id" | "title" | "price">
 
-type PaymentType = "online" | "cash";
-
 export interface IOrder {
-    payment: PaymentType;
+    payment: string;
     email: string;
     phone: string;
     address: string;
     total: number;
-    products: IProduct[];
+    items: string[];
 }
 
 export type ListItem = {
@@ -33,6 +30,7 @@ export type ListItem = {
 export interface IOrderResult {
     id: string;
     total: number;
+    error?: string;
 }
 
 export interface IStorData {

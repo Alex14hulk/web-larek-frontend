@@ -1,4 +1,4 @@
-import {IEvents} from "./base/Events";
+import {IEvents} from "./base/EventEmitter";
 import {Events, IOrder} from "../types";
 import {Form} from "./common/Form";
 
