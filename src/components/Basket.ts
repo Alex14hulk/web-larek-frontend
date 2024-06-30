@@ -1,7 +1,12 @@
 import {Component} from "./base/Component";
 import {IEvents} from "./base/EventEmitter";
 import {createElement, ensureElement} from "../utils/utils";
-import {Events, IBasket} from "../types";
+import {Events} from "../types";
+
+interface IBasket {
+    total: number;
+    products: HTMLElement[];
+}
 
 export class BasketView extends Component<IBasket> {
     protected _list: HTMLElement;
@@ -21,16 +26,16 @@ export class BasketView extends Component<IBasket> {
             });
         }
 
-        this.items = [];
+        this.products = [];
     }
 
     toggleButton(state: boolean) {
         this.setDisabled(this._button, state);
     }
 
-    set items(items: HTMLElement[]) {
-        if (items.length) {
-            this._list.replaceChildren(...items);
+    set products(products: HTMLElement[]) {
+        if (products.length) {
+            this._list.replaceChildren(...products);
             this.toggleButton(false);
         } else {
             this._list.replaceChildren(

@@ -1,15 +1,18 @@
+export enum ProductCategory {
+    'софт-скил' = 'soft',
+    'другое' = 'other',
+    'хард-скил' = 'hard',
+    'дополнительное' = 'additional',
+    'кнопка' = 'кнопка'
+}
+
 export interface IProduct {
     id: string;
     description: string;
     image: string;
     title: string;
-    category: string;
+    category: ProductCategory;
     price: number | null;
-}
-
-export interface IBasket {
-    total: number;
-    products: HTMLElement[];
 }
 
 export type TBasketProduct = Pick<IProduct, "id" | "title" | "price">

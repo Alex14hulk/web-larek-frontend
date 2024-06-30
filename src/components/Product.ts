@@ -1,4 +1,4 @@
-import {ListItem, TBasketProduct} from "../types";
+import {ListItem, ProductCategory, TBasketProduct} from "../types";
 import {Component} from "./base/Component";
 import {ensureElement} from "../utils/utils";
 
@@ -11,7 +11,7 @@ export interface IProductView {
     description: string;
     image: string;
     title: string;
-    category: string;
+    category: ProductCategory;
     price: string;
     button: string;
     status: boolean;
@@ -50,25 +50,12 @@ export class ProductView extends Component<IProductView> {
         this.setImage(this._image, value, this.title);
     }
 
-    set category(value: string) {
-        this.setText(this._category, value);
-        switch (value) {
-            case 'софт-скил':
-                this.toggleClass(this._category, `card__category_soft`);
-                break;
-            case 'другое':
-                this.toggleClass(this._category, `card__category_other`);
-                break;
-            case 'кнопка':
-                this.toggleClass(this._category, `card__category_button`);
-                break;
-            case 'дополнительное':
-                this.toggleClass(this._category, `card__category_additional`);
-                break;
-            case 'хард-скил':
-                this.toggleClass(this._category, `card__category_hard`);
-                break;
-          }
+    set category(value: keyof typeof ProductCategory) {
+        if (this._category) {
+            this.setText(this._category, value);
+            const categoryStyle = `card__category_${ProductCategory[value]}`;
+            this.toggleClass(this._category, categoryStyle, true);
+        }
     }
 
     set price(value: string) {
