@@ -106,7 +106,7 @@ export class StorData extends Model<IStorData> {
             email: '',
             phone: '',
             total: 0,
-            items: [],
+            items: []
         };
     }
 }

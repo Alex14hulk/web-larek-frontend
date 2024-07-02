@@ -2,6 +2,7 @@ import {ListItem, ProductCategory, TBasketProduct} from "../types";
 import {Component} from "./base/Component";
 import {ensureElement} from "../utils/utils";
 
+
 interface IProductActions {
     onClick: (event: MouseEvent) => void;
 }
@@ -18,11 +19,12 @@ export interface IProductView {
 }
 
 export class ProductView extends Component<IProductView> {
-    private _image: HTMLImageElement;
-    private _title: HTMLElement;
-    private _category: HTMLElement;
-    private _price: HTMLElement;
+    protected _image?: HTMLImageElement;
+    protected  _title: HTMLElement;
+    protected _category?: HTMLElement;
+    protected _price: HTMLElement;
     protected _button: HTMLButtonElement;
+    private _canRemove: boolean = false;
 
     constructor(container: HTMLElement, actions: IProductActions) {
         super(container);
@@ -48,11 +50,14 @@ export class ProductView extends Component<IProductView> {
 
     set image(value: string) {
         this.setImage(this._image, value, this.title);
-    }
+        
+    } 
 
     set category(value: keyof typeof ProductCategory) {
         if (this._category) {
             this.setText(this._category, value);
+            this._category?.classList?.remove('card__category_soft');
+            this._category?.classList?.remove('card__category_other');
             const categoryStyle = `card__category_${ProductCategory[value]}`;
             this.toggleClass(this._category, categoryStyle, true);
         }
@@ -68,8 +73,7 @@ export class ProductView extends Component<IProductView> {
                 this.setText(this._button, 'Недоступно');
                 this.setDisabled(this._button, true);
             } else {
-                this.setText(this._button, status ? 'Уже в корзине' : 'В корзину');
-                this.setDisabled(this._button, status);
+                this.setText(this._button, status ? 'Удалить из корзины' : 'В корзину');
             }
         }
     }
@@ -86,6 +90,7 @@ export class ProductViewModal extends ProductView {
     set description(value: string) {
         this.setText(this._description, value)
     }
+    
 }
 
 export class ProductInBasketView extends Component<TBasketProduct | ListItem> {

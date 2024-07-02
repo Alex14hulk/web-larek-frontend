@@ -1,10 +1,10 @@
-export enum ProductCategory {
-    'софт-скил' = 'soft',
-    'другое' = 'other',
-    'хард-скил' = 'hard',
-    'дополнительное' = 'additional',
-    'кнопка' = 'кнопка'
-}
+export enum ProductCategory { 
+    'софт-скил' = 'soft', 
+    'другое' = 'other', 
+    'хард-скил' = 'hard', 
+    'дополнительное' = 'additional', 
+    'кнопка' = 'button' 
+} 
 
 export interface IProduct {
     id: string;

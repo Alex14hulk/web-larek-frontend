@@ -73,7 +73,13 @@ events.on<ProductsChangeEvent>(Events.CATALOG_CHANGE, () => {
 // Открытие продукта в модальном окне
 events.on(Events.PRODUCT_OPEN_IN_MODAL, (product: IProduct) => {
     const card = new ProductViewModal(cloneTemplate(productModal), {
-        onClick: () => events.emit(Events.ADD_PRODUCT_TO_BASKET, product),
+        onClick: () => {
+            if (storData.getBasket().some(item => item === product)) {
+                events.emit(Events.REMOVE_PRODUCT_FROM_BASKET, product);
+            } else {
+                events.emit(Events.ADD_PRODUCT_TO_BASKET, product);
+            }
+        },
     });
 
     modal.render({
@@ -88,6 +94,7 @@ events.on(Events.PRODUCT_OPEN_IN_MODAL, (product: IProduct) => {
     });
 });
 
+
 // Блокировка прокрутки страницы, если открыто модальное окно
 events.on(Events.MODAL_OPEN, () => {
     page.locked = true;
@@ -101,7 +108,7 @@ events.on(Events.MODAL_CLOSE, () => {
 // Добавляем продукт в корзину
 events.on(Events.ADD_PRODUCT_TO_BASKET, (product: IProduct) => {
     storData.addProductToBasket(product);
-    page.counter = storData.getBasket().length
+    page.counter = storData.getBasket().length;
     modal.close();
 });
 
@@ -208,6 +215,7 @@ events.on(/(^order|^contacts):submit/, () => {
                     description: !result.error ? `Списано ${result.total} синапсов` : result.error,
                 }),
             });
+            storData.clearBasket();
         })
         .catch(console.error);
 });
