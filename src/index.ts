@@ -216,6 +216,8 @@ events.on(/(^order|^contacts):submit/, () => {
                 }),
             });
             storData.clearBasket();
+            storData.clearOrder();
+            orderForm.resetPaymentButtons();
         })
         .catch(console.error);
 });
